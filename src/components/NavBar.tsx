@@ -17,10 +17,10 @@ const router = useRouter()
           <Navbar.Brand as={Link} href="#">{pagina}</Navbar.Brand>
           <Nav className="me-auto">
             {pagina != 'Home' && <Nav.Link as={Link} href="/">Home</Nav.Link>}
-            {pagina != 'User' && <Nav.Link as={Link} href="/user/listUser">Users</Nav.Link>}
-            {pagina != 'Store' && <Nav.Link as={Link} href="/store/listStore">Store</Nav.Link>}
-            {pagina != 'Product' && <Nav.Link as={Link} href="/product/listProduct">Products</Nav.Link>}
-            {pagina != 'Category' && <Nav.Link as={Link} href="/category/listCategory">Categories</Nav.Link>}
+            {pagina != 'User' && <Nav.Link as={Link} href="/user">User</Nav.Link>}
+            {pagina != 'Store' && <Nav.Link as={Link} href="/store">Store</Nav.Link>}
+            {pagina != 'Product' && <Nav.Link as={Link} href="/product">Product</Nav.Link>}
+            {pagina != 'Category' && <Nav.Link as={Link} href="/category">Category</Nav.Link>}
           </Nav>
         </Container>
       </Navbar>
