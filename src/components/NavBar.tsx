@@ -1,6 +1,7 @@
+import { logout } from "@/services/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 
 type NavBarProps = {
   pagina: String
@@ -9,6 +10,11 @@ type NavBarProps = {
 export default function NavBar({pagina}: NavBarProps) {
 
 const router = useRouter()
+
+const handleLogout = () => {
+    logout?.();
+    router.push("/login");
+  };
 
   return (
     <>
@@ -22,6 +28,13 @@ const router = useRouter()
             {pagina != 'Product' && <Nav.Link as={Link} href="/product">Product</Nav.Link>}
             {pagina != 'Category' && <Nav.Link as={Link} href="/category">Category</Nav.Link>}
           </Nav>
+           <Button
+              variant="danger"
+              size="sm"
+              onClick={handleLogout}
+            >
+              Logoff
+            </Button>
         </Container>
       </Navbar>
     </>
