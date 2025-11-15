@@ -17,6 +17,21 @@ export async function getStore(id: number): Promise<Store> {
   return data
 }
 
+export async function getUsersByStore(storeId: number) {
+  const { data } = await api.get(`/store/${storeId}/users`)
+  return data.data;
+}
+
+export async function getProductsByStore(storeId: number) {
+  const { data } = await api.get(`/store/${storeId}/products`)
+  return data.data;
+}
+
+export async function getCategoriesByStore(storeId: number) {
+  const { data } = await api.get(`/store/${storeId}/categories`)
+  return data.data;
+}
+
 export async function createStore(payload: Store): Promise<Store> {
   const { data } = await api.post<Store>('/store', payload)
   return data

@@ -8,6 +8,7 @@ export type LoginPayload = {
 export type LoginResult = {
   ok: boolean;
   token?: string;
+  user?: any;   
   error?: string;
 };
 
@@ -25,8 +26,14 @@ export async function login(payload: LoginPayload): Promise<LoginResult> {
       return { ok: false, error: "Token expired or invalid." };
     }
 
-    localStorage.setItem(TOKEN_KEY, data.token);
+    localStorage.setItem("auth_token", data.token);
+
+    if (data.user) {
+      localStorage.setItem("auth_user", JSON.stringify(data.user));
+    }
+
     return { ok: true, token: data.token };
+
   } catch (error: any) {
     const message =
       error.response?.data?.error ||

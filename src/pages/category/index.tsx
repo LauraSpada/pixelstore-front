@@ -1,28 +1,44 @@
 import NavBar from "@/components/NavBar";
 import { listCategories, Category } from "@/services/category";
+import { getCategoriesByStore } from "@/services/store";
 import { useEffect, useState } from "react";
 import { Alert, Container, Spinner, Table } from "react-bootstrap";
 
 export default function CategoryPage() {
     
-    const [categories, setcategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        async function fetchData() {
-        try {
-            const data = await listCategories();
-            setcategories(data);
-        } catch (err) {
-            setError("Error searching Categories.");
-        } finally {
-            setLoading(false);
-        }
-        }
-
-        fetchData();
-    }, []);
+   useEffect(() => {
+           const stored = localStorage.getItem("auth_user");
+           if (!stored) {
+             console.error("No user.");
+             setLoading(false);
+             return;
+           }
+       
+           const user = JSON.parse(stored);
+       
+           if (!user.storeId) {
+             console.error("Logged user don't have storeId");
+             setLoading(false);
+             return;
+           }
+       
+           async function load() {
+             try {
+               const list = await getCategoriesByStore(user.storeId);
+               setCategories(list);
+             } catch (err) {
+               console.error("Erro ao buscar usuários:", err);
+             } finally {
+               setLoading(false);
+             }
+           }
+       
+           load();
+         }, []);
 
     if (loading)
         return (
@@ -37,7 +53,6 @@ export default function CategoryPage() {
             <Alert variant="danger">{error}</Alert>
         </Container>
         );
-
 
     return(
         <>
@@ -56,11 +71,11 @@ export default function CategoryPage() {
                 </thead>
                 <tbody>
                 {categories.length > 0 ? (
-                    categories.map((category) => (
-                    <tr key={category.id}>
-                        <td>{category.id}</td>
-                        <td>{category.name}</td>
-                        <td>{category.description}</td>
+                    categories.map((c) => (
+                    <tr key={c.id}>
+                        <td>{c.id}</td>
+                        <td>{c.name}</td>
+                        <td>{c.description}</td>
                     </tr>
                     ))
                 ) : (

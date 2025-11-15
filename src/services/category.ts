@@ -16,6 +16,11 @@ export async function getCategory(id: number): Promise<Category> {
   return data
 }
 
+export async function getProductsByCategory(categoryId: number) {
+  const { data } = await api.get(`/category/${categoryId}/products`)
+  return data.data;
+}
+
 export async function createCategory(payload: Category): Promise<Category> {
   const { data } = await api.post<Category>('/category', payload)
   return data

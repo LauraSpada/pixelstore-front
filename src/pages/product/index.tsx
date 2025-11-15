@@ -4,26 +4,45 @@ import { listProducts, Product } from "@/services/product";
 import { useEffect, useState } from "react";
 import { Alert, Container, Spinner, Table } from "react-bootstrap";
 
+import { getProductsByStore } from "@/services/store";
+import { Store } from "@/services/store";
+
 export default function ProductPage() {
 
-    const [products, setproducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        async function fetchData() {
-        try {
-            const data = await listProducts();
-            setproducts(data);
-        } catch (err) {
-            setError("Error searching Products.");
-        } finally {
+        const stored = localStorage.getItem("auth_user");
+        if (!stored) {
+          console.error("No user.");
+          setLoading(false);
+          return;
+        }
+    
+        const user = JSON.parse(stored);
+    
+        if (!user.storeId) {
+          console.error("Logged user don't have storeId");
+          setLoading(false);
+          return;
+        }
+    
+        async function load() {
+          try {
+            const list = await getProductsByStore(user.storeId);
+            setProducts(list);
+          } catch (err) {
+            console.error("Erro ao buscar usuários:", err);
+          } finally {
             setLoading(false);
+          }
         }
-        }
-
-        fetchData();
-    }, []);
+    
+        load();
+      }, []);
+    
 
     if (loading)
         return (
@@ -42,7 +61,6 @@ export default function ProductPage() {
     return(
         <>
             <NavBar pagina='Product'/>
-            <p>page list products</p>
 
             <Container className="mt-4">
                 <h2>List of Products</h2>
@@ -57,12 +75,12 @@ export default function ProductPage() {
                     </thead>
                     <tbody>
                     {products.length > 0 ? (
-                        products.map((product) => (
-                        <tr key={product.id}>
-                            <td>{product.id}</td>
-                            <td>{product.name}</td>
-                            <td>{product.price}</td>
-                            <td>{product.stock}</td>
+                        products.map((p) => (
+                        <tr key={p.id}>
+                            <td>{p.id}</td>
+                            <td>{p.name}</td>
+                            <td>{p.price}</td>
+                            <td>{p.stock}</td>
                         </tr>
                         ))
                     ) : (
@@ -75,7 +93,6 @@ export default function ProductPage() {
                     </tbody>
                 </Table>
             </Container>
-
 
 {/*
             <br/>
