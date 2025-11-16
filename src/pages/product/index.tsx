@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { Alert, Container, Spinner, Table } from "react-bootstrap";
 
 import { getProductsByStore } from "@/services/store";
-import { Store } from "@/services/store";
 
 export default function ProductPage() {
 
@@ -34,7 +33,7 @@ export default function ProductPage() {
             const list = await getProductsByStore(user.storeId);
             setProducts(list);
           } catch (err) {
-            console.error("Erro ao buscar usuários:", err);
+            console.error("Error while searching Products", err);
           } finally {
             setLoading(false);
           }

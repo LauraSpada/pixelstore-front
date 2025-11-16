@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Alert, Container, Spinner, Table } from "react-bootstrap";
 
 import { getUsersByStore } from "@/services/store";
-import { Store } from "@/services/store";
 
 export default function UserPage() {
 
@@ -23,7 +22,7 @@ export default function UserPage() {
     const user = JSON.parse(stored);
 
     if (!user.storeId) {
-      console.error("Usuário logado não possui storeId");
+      console.error("Logged user don't have storeId");
       setLoading(false);
       return;
     }
@@ -33,7 +32,7 @@ export default function UserPage() {
         const list = await getUsersByStore(user.storeId);
         setUsers(list);
       } catch (err) {
-        console.error("Erro ao buscar usuários:", err);
+        console.error("Error while searching users:", err);
       } finally {
         setLoading(false);
       }

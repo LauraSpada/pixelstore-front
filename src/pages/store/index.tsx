@@ -1,29 +1,43 @@
 import NavBar from "@/components/NavBar";
-import { listProducts } from "@/services/product";
-import { listStores, Store } from "@/services/store";
+import { listStores, Store, getStore} from "@/services/store";
 import { useEffect, useState } from "react";
 import { Alert, Container, Spinner, Table } from "react-bootstrap";
 
 export default function StorePage() {
 
-    const [stores, setStores] = useState<Store[]>([]);
+    const [store, setStore] = useState<Store | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
     useEffect(() => {
-    async function fetchData() {
-        try {
-        const data = await listStores();
-        setStores(data);
-        } catch (err) {
-        setError("Erro searching Stores.");
-        } finally {
-        setLoading(false);
+    async function load() {
+      try {
+        const stored = localStorage.getItem("auth_user");
+
+        if (!stored) {
+          setError("No user");
+          return;
         }
+
+        const user = JSON.parse(stored);
+
+        if (!user.storeId) {
+          setError("Logged user don't have storeId");
+          return;
+        }
+
+        const data = await getStore(user.storeId);
+        setStore(data);
+      } catch (err) {
+        console.error(err);
+        setError("Erro while searching Store.");
+      } finally {
+        setLoading(false);
+      }
     }
 
-    fetchData();
-    }, []);
+    load();
+  }, []);
 
     if (loading)
     return (
@@ -42,36 +56,11 @@ export default function StorePage() {
     return(
         <>
             <NavBar pagina='Store'/>
-            <p>page list stores</p>
 
             <Container className="mt-4">
-            <h2>List of Stores</h2>
-            <Table striped bordered hover responsive className="mt-3">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Location</th>
-                </tr>
-                </thead>
-                <tbody>
-                {stores.length > 0 ? (
-                    stores.map((store) => (
-                    <tr key={store.id}>
-                        <td>{store.id}</td>
-                        <td>{store.name}</td>
-                        <td>{store.location}</td>
-                    </tr>
-                    ))
-                ) : (
-                    <tr>
-                    <td colSpan={4} className="text-center">
-                        No stores were found
-                    </td>
-                    </tr>
-                )}
-                </tbody>
-            </Table>
+            <h2>{store?.name}</h2>
+            <p>location:{store?.location}</p>
+            <p>id:{store?.id}</p>
             </Container>
 
         </>

@@ -31,7 +31,7 @@ export default function CategoryPage() {
                const list = await getCategoriesByStore(user.storeId);
                setCategories(list);
              } catch (err) {
-               console.error("Erro ao buscar usuários:", err);
+               console.error("Error while searching categories:", err);
              } finally {
                setLoading(false);
              }
