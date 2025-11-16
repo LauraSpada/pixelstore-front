@@ -1,9 +1,10 @@
 import NavBar from "@/components/NavBar";
 import { listUsers, User } from "@/services/user";
 import { useEffect, useState } from "react";
-import { Alert, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
 
 import { getUsersByStore } from "@/services/store";
+import Link from "next/link";
 
 export default function UserPage() {
 
@@ -59,34 +60,22 @@ export default function UserPage() {
         <>
             <NavBar pagina='User'/>
 
-         <Container className="mt-4">
-                <h2>List of Users</h2>
-                <Table striped bordered hover responsive className="mt-3">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {users.length > 0 ? (
-                        users.map((u) => (
-                        <tr key={u.id}>
-                            <td>{u.id}</td>
-                            <td>{u.name}</td>
-                        </tr>
-                        ))
-                    ) : (
-                        <tr>
-                        <td colSpan={4} className="text-center">
-                            No Users were found
-                        </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </Table>
-            </Container>
-
+        {users.length > 0 ? (
+      <div className="d-flex flex-wrap gap-3 mt-3">
+        {users.map((u) => (
+        <Link href={`/user/${u.id}`} style={{ textDecoration: "none" }}>
+        <Card border="danger" bg="dark" text="white" style={{ width: "18rem" }} key={u.id}>
+              <Card.Header>{u.id}</Card.Header>
+            <Card.Body>
+              <Card.Title>{u.name}</Card.Title>
+            </Card.Body>
+        </Card>
+        </Link>
+        ))}
+      </div>
+    ) : (
+      <p className="text-center mt-3">No Products were found</p>
+    )}
         </>
     )
 }

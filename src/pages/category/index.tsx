@@ -1,8 +1,9 @@
 import NavBar from "@/components/NavBar";
 import { listCategories, Category } from "@/services/category";
 import { getCategoriesByStore } from "@/services/store";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Alert, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
 
 export default function CategoryPage() {
     
@@ -57,37 +58,26 @@ export default function CategoryPage() {
     return(
         <>
             <NavBar pagina='Category'/>
-            <p>page list categories</p>
-
-            <Container className="mt-4">
-            <h2>List of Categories</h2>
-            <Table striped bordered hover responsive className="mt-3">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                {categories.length > 0 ? (
-                    categories.map((c) => (
-                    <tr key={c.id}>
-                        <td>{c.id}</td>
-                        <td>{c.name}</td>
-                        <td>{c.description}</td>
-                    </tr>
-                    ))
-                ) : (
-                    <tr>
-                    <td colSpan={4} className="text-center">
-                        No Categories were found
-                    </td>
-                    </tr>
-                )}
-                </tbody>
-            </Table>
-            </Container>
+           
+           {categories.length > 0 ? (
+             <div className="d-flex flex-wrap gap-3 mt-3">
+               {categories.map((c) => (
+               <Link href={`/category/${c.id}`} style={{ textDecoration: "none" }}>
+               <Card border="warning" bg="dark" text="white" style={{ width: "18rem" }} key={c.id}>
+                  <Card.Header>{c.id}</Card.Header>
+                <Card.Body>
+                <Card.Title>{c.name}</Card.Title>
+                <Card.Text>
+                    {c.description}
+                </Card.Text>
+                </Card.Body>
+               </Card>
+               </Link>
+               ))}
+             </div>
+           ) : (
+             <p className="text-center mt-3">No Products were found</p>
+           )}
 
         </>
     )

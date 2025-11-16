@@ -2,9 +2,10 @@ import NavBar from "@/components/NavBar";
 {/*import { Card } from "react-bootstrap";*/}
 import { listProducts, Product } from "@/services/product";
 import { useEffect, useState } from "react";
-import { Alert, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
 
 import { getProductsByStore } from "@/services/store";
+import Link from "next/link";
 
 export default function ProductPage() {
 
@@ -61,52 +62,29 @@ export default function ProductPage() {
         <>
             <NavBar pagina='Product'/>
 
-            <Container className="mt-4">
-                <h2>List of Products</h2>
-                <Table striped bordered hover responsive className="mt-3">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {products.length > 0 ? (
-                        products.map((p) => (
-                        <tr key={p.id}>
-                            <td>{p.id}</td>
-                            <td>{p.name}</td>
-                            <td>{p.price}</td>
-                            <td>{p.stock}</td>
-                        </tr>
-                        ))
-                    ) : (
-                        <tr>
-                        <td colSpan={4} className="text-center">
-                            No Products were found
-                        </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </Table>
-            </Container>
-
-{/*
-            <br/>
-
-            <Card border="primary" style={{ width: '18rem' }}>
-                <Card.Header><Card.Title>Teste</Card.Title></Card.Header>
+        {products.length > 0 ? (
+        <div className="d-flex flex-wrap gap-3 mt-3">
+            {products.map((p) => (
+            <Link href={`/produto/${p.id}`} style={{ textDecoration: "none" }}>
+            <Card border="success" bg="dark" text="white" style={{ width: "18rem" }} key={p.id}>
+                    <Card.Header>{p.id}</Card.Header>
                 <Card.Body>
-                    <Card.Text>teste</Card.Text>
-                    <Card.Text>teste2</Card.Text>
-                    <Card.Text>teste3</Card.Text>
+                    <Card.Title>{p.name}</Card.Title>
+                <Card.Text>
+                    Price: {p.price}
+                </Card.Text>
+                <Card.Text>
+                    Stock: {p.stock}
+                </Card.Text>
                 </Card.Body>
             </Card>
+            </Link>
+            ))}
+        </div>
+        ) : (
+        <p className="text-center mt-3">No Products were found</p>
+        )}
 
-            <br/>
-*/}
         </>
     )
 }

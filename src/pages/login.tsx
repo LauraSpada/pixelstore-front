@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import { Button, Card, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap"
 
-export default function Home() {
+export default function Login() {
   const router = useRouter()
   const [name, setUsername] = useState('')
   const [password, setPassword] = useState('')
