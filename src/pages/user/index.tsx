@@ -63,7 +63,7 @@ export default function UserPage() {
         {users.length > 0 ? (
       <div className="d-flex flex-wrap gap-3 mt-3">
         {users.map((u) => (
-        <Link href={`/user/${u.id}`} style={{ textDecoration: "none" }}>
+        <Link href={`/user/update`} style={{ textDecoration: "none" }}>
         <Card border="danger" bg="dark" text="white" style={{ width: "18rem" }} key={u.id}>
               <Card.Header>{u.id}</Card.Header>
             <Card.Body>
@@ -74,7 +74,7 @@ export default function UserPage() {
         ))}
       </div>
     ) : (
-      <p className="text-center mt-3">No Products were found</p>
+      <p className="text-center mt-3">No Users were found</p>
     )}
         </>
     )

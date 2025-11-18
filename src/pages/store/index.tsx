@@ -1,5 +1,6 @@
 import NavBar from "@/components/NavBar";
 import { listStores, Store, getStore} from "@/services/store";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
 
@@ -57,13 +58,15 @@ export default function StorePage() {
         <>
             <NavBar pagina='Store'/>
 
+            <Link href={`store/update`} style={{ textDecoration: "none" }}>
             <Card style={{ maxWidth: "700px", margin: "20px auto"}}>
             <Card.Img variant="top"  src={`https://picsum.photos/350/200`}  style={{ objectFit: "cover"}}/>
             <Card.Body>
               <Card.Title><strong>{store?.name}</strong></Card.Title>
               <Card.Text><strong>{store?.location}</strong></Card.Text>
             </Card.Body>
-          </Card>
+            </Card>
+            </Link>
 
         </>
     )

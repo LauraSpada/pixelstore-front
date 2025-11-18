@@ -1,8 +1,7 @@
 import NavBar from "@/components/NavBar";
-{/*import { Card } from "react-bootstrap";*/}
 import { listProducts, Product } from "@/services/product";
 import { useEffect, useState } from "react";
-import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Card, Container, Spinner, Table } from "react-bootstrap";
 
 import { getProductsByStore } from "@/services/store";
 import Link from "next/link";
@@ -61,12 +60,13 @@ export default function ProductPage() {
     return(
         <>
             <NavBar pagina='Product'/>
+            <Button href="product/create" >Add</Button>
 
         {products.length > 0 ? (
         <div className="d-flex flex-wrap gap-3 mt-3">
             {products.map((p) => (
-            <Link href={`/produto/${p.id}`} style={{ textDecoration: "none" }}>
-            <Card border="success" bg="dark" text="white" style={{ width: "18rem" }} key={p.id}>
+            <Link href={`/product/update?id=${p.id}`} style={{ textDecoration: "none" }}>
+            <Card border="success" bg="dark" text="white" style={{ width: "18rem", cursor: "pointer"}} key={p.id}>
                     <Card.Header>{p.id}</Card.Header>
                 <Card.Body>
                     <Card.Title>{p.name}</Card.Title>

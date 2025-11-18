@@ -22,11 +22,10 @@ const handleLogout = () => {
         <Container>
           <Navbar.Brand as={Link} href="#">{pagina}</Navbar.Brand>
           <Nav className="me-auto">
-            {pagina != 'Home' && <Nav.Link as={Link} href="/">Home</Nav.Link>}
             {pagina != 'User' && <Nav.Link as={Link} href="/user">User</Nav.Link>}
             {pagina != 'Store' && <Nav.Link as={Link} href="/store">Store</Nav.Link>}
-            {pagina != 'Product' && <Nav.Link as={Link} href="/product">Product</Nav.Link>}
             {pagina != 'Category' && <Nav.Link as={Link} href="/category">Category</Nav.Link>}
+            {pagina != 'Product' && <Nav.Link as={Link} href="/product">Product</Nav.Link>}
           </Nav>
            <Button
               variant="danger"

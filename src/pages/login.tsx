@@ -1,9 +1,9 @@
 import { login } from "@/services/auth"
 import { useState } from "react"
 import { useRouter } from "next/router"
-import { Button, Card, Col, Container, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap"
+import { Button, ButtonGroup, Card, Col, Container, Dropdown, DropdownButton, Form, FormControl, FormGroup, FormLabel, Row } from "react-bootstrap"
 
-export default function Login() {
+export default function LoginPage() {
   const router = useRouter()
   const [name, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -65,6 +65,16 @@ export default function Login() {
                 </Form>
               </Card.Body>
             </Card>
+            <ButtonGroup vertical>
+              <DropdownButton
+              as={ButtonGroup}
+              title="Create"
+              id="bg-vertical-dropdown-1"
+              >
+              <Dropdown.Item href="/user/create" >User</Dropdown.Item>
+              <Dropdown.Item href="/store/create" >Store</Dropdown.Item>
+              </DropdownButton>
+              </ButtonGroup>
           </Col>
         </Row>
       </Container>

@@ -3,7 +3,7 @@ import { listCategories, Category } from "@/services/category";
 import { getCategoriesByStore } from "@/services/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
+import { Alert, Button, Card, Container, Spinner } from "react-bootstrap";
 
 export default function CategoryPage() {
     
@@ -58,11 +58,12 @@ export default function CategoryPage() {
     return(
         <>
             <NavBar pagina='Category'/>
+            <Button href="/category/create" >Add</Button>
            
            {categories.length > 0 ? (
              <div className="d-flex flex-wrap gap-3 mt-3">
                {categories.map((c) => (
-               <Link href={`/category/${c.id}`} style={{ textDecoration: "none" }}>
+               <Link href={`/category/details?id=${c.id}`} style={{ textDecoration: "none" }}>
                <Card border="warning" bg="dark" text="white" style={{ width: "18rem" }} key={c.id}>
                   <Card.Header>{c.id}</Card.Header>
                 <Card.Body>
@@ -76,7 +77,7 @@ export default function CategoryPage() {
                ))}
              </div>
            ) : (
-             <p className="text-center mt-3">No Products were found</p>
+             <p className="text-center mt-3">No Categories were found</p>
            )}
 
         </>

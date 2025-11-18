@@ -23,6 +23,8 @@ export default function Home() {
     <>
     <NavBar pagina='Home'/>
     <p>página inicial</p>
+
+    
     </>
   );
 }

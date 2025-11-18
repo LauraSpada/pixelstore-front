@@ -32,9 +32,9 @@ export async function getCategoriesByStore(storeId: number) {
   return data.data;
 }
 
-export async function createStore(payload: Store): Promise<Store> {
-  const { data } = await api.post<Store>('/store', payload)
-  return data
+export async function createStore(data: { name: string; location: string }): Promise<Store> {
+  const res = await api.post<Store>('/store', data)
+  return res.data;
 }
 
 export async function updateStore(id: number, payload: Store): Promise<Store> {

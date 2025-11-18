@@ -1,4 +1,5 @@
 import api from "../services/api"
+import { getToken } from "./auth";
 
 export type User = {
   id?: number;
@@ -17,16 +18,27 @@ export async function getUser(id: number): Promise<User> {
   return data
 }
 
-export async function createUser(payload: User): Promise<User> {
-  const { data } = await api.post<User>('/user', payload)
-  return data
+export async function createUser(name: string, password: string, storeId: number) {
+  const res = await api.post(`/user/store/${storeId}`, { name, password
+  });
+  return res.data;
 }
 
-export async function updateUser(id: number, payload: User): Promise<User> {
-  const { data } = await api.put<User>(`/user/${id}`, payload)
-  return data
+export async function updateUser(user: User): Promise<User> {
+  const token = getToken();
+  const response = await api.put(`/user/${user.id}`, user, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
 }
 
 export async function deleteUser(id: number): Promise<void> {
-  await api.delete(`/user/${id}`)
+  const token = getToken();
+  await api.delete(`/user/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

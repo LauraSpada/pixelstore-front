@@ -1,4 +1,5 @@
 import api from "../services/api"
+import { getToken } from "./auth";
 
 export type Category = {
   id?: number;
@@ -21,9 +22,17 @@ export async function getProductsByCategory(categoryId: number) {
   return data.data;
 }
 
-export async function createCategory(payload: Category): Promise<Category> {
-  const { data } = await api.post<Category>('/category', payload)
-  return data
+export async function createCategory( name: string, description: string, storeId: number ) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.post(
+    `/category/store/${storeId}`,{ name, description,
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }
 
 export async function updateCategory(id: number, payload: Category): Promise<Category> {
