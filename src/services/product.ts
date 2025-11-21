@@ -19,12 +19,11 @@ export async function getProduct(id: number): Promise<Product> {
 }
 
 export async function createProduct(name: string, price: number, stock: number) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.post(
     `/product/category/{$categoriId}`, { name, price, stock
     }, {
        headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
@@ -32,23 +31,21 @@ export async function createProduct(name: string, price: number, stock: number) 
 }
 
 export async function updateProduct(id: number, name: string, price: number, stock: number) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.put(`/product/${id}`,
     { name, price, stock },
      {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return res.data;
 }
 
 export async function deleteProduct(id: number) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.delete(`/product/${id}`, 
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );

@@ -2,46 +2,57 @@ import NavBar from "@/components/NavBar";
 import { listProducts, Product } from "@/services/product";
 import { useEffect, useState } from "react";
 import { Alert, Button, Card, Container, Spinner, Table } from "react-bootstrap";
-
 import { getProductsByStore } from "@/services/store";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { getToken, isValidJwt, logout } from "@/services/auth";
 
 export default function ProductPage() {
 
-    const [products, setProducts] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const stored = localStorage.getItem("auth_user");
-        if (!stored) {
-          console.error("No user.");
-          setLoading(false);
-          return;
-        }
-    
-        const user = JSON.parse(stored);
-    
-        if (!user.storeId) {
-          console.error("Logged user don't have storeId");
-          setLoading(false);
-          return;
-        }
-    
-        async function load() {
-          try {
-            const list = await getProductsByStore(user.storeId);
-            setProducts(list);
-          } catch (err) {
-            console.error("Error while searching Products", err);
-          } finally {
-            setLoading(false);
-          }
-        }
-    
-        load();
-      }, []);
-    
+  useEffect(() => {
+    async function init() {
+      const t = getToken();
+      if (!t || !isValidJwt(t)) {
+        logout();
+        router.replace("/login");
+        return;
+      }
+      setToken(t); 
+
+      const stored = localStorage.getItem("auth_user");
+      if (!stored) {
+        console.error("No user.");
+        setLoading(false);
+        return;
+      }
+
+      const user = JSON.parse(stored);
+
+      if (!user.storeId) {
+        console.error("Logged user don't have storeId");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const list = await getProductsByStore(user.storeId);
+        setProducts(list);
+      } catch (err) {
+        console.error("Error while searching Products", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    init();
+  }, [router]);
+
+if (!token) return null;
 
     if (loading)
         return (

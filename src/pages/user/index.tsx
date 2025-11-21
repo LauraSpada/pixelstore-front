@@ -1,34 +1,45 @@
 import NavBar from "@/components/NavBar";
+import { getToken, isValidJwt, logout } from "@/services/auth";
 import { listUsers, User } from "@/services/user";
 import { useEffect, useState } from "react";
 import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
-
 import { getUsersByStore } from "@/services/store";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function UserPage() {
 
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
- useEffect(() => {
-    const stored = localStorage.getItem("auth_user");
-    if (!stored) {
-      console.error("No user.");
-      setLoading(false);
-      return;
-    }
+  useEffect(() => {
+    async function init() {
+      const t = getToken();
+      if (!t || !isValidJwt(t)) {
+        logout();
+        router.replace("/login");
+        return;
+      }
+      setToken(t);
 
-    const user = JSON.parse(stored);
+      const stored = localStorage.getItem("auth_user");
+      if (!stored) {
+        console.error("No user.");
+        setLoading(false);
+        return;
+      }
 
-    if (!user.storeId) {
-      console.error("Logged user don't have storeId");
-      setLoading(false);
-      return;
-    }
+      const user = JSON.parse(stored);
 
-    async function load() {
+      if (!user.storeId) {
+        console.error("Logged user don't have storeId");
+        setLoading(false);
+        return;
+      }
+
       try {
         const list = await getUsersByStore(user.storeId);
         setUsers(list);
@@ -38,9 +49,10 @@ export default function UserPage() {
         setLoading(false);
       }
     }
+    init();
+  }, [router]);
 
-    load();
-  }, []);
+if (!token) return null;
 
   if (loading)
     return (

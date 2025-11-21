@@ -26,6 +26,7 @@ const handleLogout = () => {
             {pagina != 'Store' && <Nav.Link as={Link} href="/store">Store</Nav.Link>}
             {pagina != 'Category' && <Nav.Link as={Link} href="/category">Category</Nav.Link>}
             {pagina != 'Product' && <Nav.Link as={Link} href="/product">Product</Nav.Link>}
+            {pagina != 'About' && <Nav.Link as={Link} href="about">About</Nav.Link>}
           </Nav>
            <Button
               variant="danger"

@@ -1,10 +1,10 @@
 import api from "../services/api"
+import { getToken } from "./auth";
 
 export type Store = {
   id?: number;
   name: string;
   location: string;
-  description: string;
 };
 
 export async function listStores(): Promise<Store[]> {
@@ -38,13 +38,12 @@ export async function createStore(data: { name: string; location: string }): Pro
 }
 
 export async function updateStore(id: number, name: string, location: string) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.put(
     `/store/${id}`,
     { name, location },
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );
@@ -52,11 +51,10 @@ export async function updateStore(id: number, name: string, location: string) {
 }
 
 export async function deleteStore(id: number) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.delete(`/store/${id}`, 
     {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return res.data;

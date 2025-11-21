@@ -25,22 +25,20 @@ export async function createUser(name: string, password: string, storeId: number
 }
 
 export async function updateUser(id: number, name: string, password: string) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.put(`/user/${id}`,
     { name, password }, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   return res.data;
 }
 
 export async function deleteUser(id: number) {
-  const token = localStorage.getItem("auth_token");
   const res = await api.delete(`/user/${id}`, 
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
       },
     }
   );

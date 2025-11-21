@@ -1,17 +1,32 @@
 import NavBar from "@/components/NavBar";
+import { getToken, isValidJwt, logout } from "@/services/auth";
 import { listStores, Store, getStore} from "@/services/store";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Alert, Card, Container, Spinner, Table } from "react-bootstrap";
 
 export default function StorePage() {
 
-    const [store, setStore] = useState<Store | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  const [store, setStore] = useState<Store | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
     
-    useEffect(() => {
+  useEffect(() => {
     async function load() {
+
+      const t = getToken();
+
+      if (!t || !isValidJwt(t)) {
+        logout();
+        router.replace("/login");
+        return;
+      }
+
+      setToken(t); 
+
       try {
         const stored = localStorage.getItem("auth_user");
 
@@ -36,9 +51,10 @@ export default function StorePage() {
         setLoading(false);
       }
     }
-
     load();
-  }, []);
+  }, [router]);
+
+if (!token) return null;
 
     if (loading)
     return (
