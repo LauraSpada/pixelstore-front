@@ -31,22 +31,26 @@ export async function createProduct(name: string, price: number, stock: number) 
   return res.data;
 }
 
-
-
-export async function updateProduct(id: number, data: any) {
-  const token = getToken();
-  return api.put(`/product/${id}`, data, {
+export async function updateProduct(id: number, name: string, price: number, stock: number) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.put(`/product/${id}`,
+    { name, price, stock },
+     {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  return res.data;
 }
 
 export async function deleteProduct(id: number) {
-  const token = getToken();
-  return api.delete(`/product/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const token = localStorage.getItem("auth_token");
+  const res = await api.delete(`/product/${id}`, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }

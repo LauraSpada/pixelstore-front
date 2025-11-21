@@ -60,7 +60,6 @@ export default function ProductPage() {
     return(
         <>
             <NavBar pagina='Product'/>
-            <Button href="product/create" >Add</Button>
 
         {products.length > 0 ? (
         <div className="d-flex flex-wrap gap-3 mt-3">

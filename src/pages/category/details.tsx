@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getProductsByCategory } from "@/services/category";
+import { getProductsByCategory, getCategory } from "@/services/category";
 import { Alert, Button, Card, Container, Spinner } from "react-bootstrap";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
@@ -11,6 +11,7 @@ export default function CategoryDetailsPage() {
   const params = useSearchParams();
   const categoryId = Number(params.get("id"));
 
+  const [category, setCategory] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,11 +25,14 @@ export default function CategoryDetailsPage() {
 
     async function load() {
       try {
+        const catInfo = await getCategory(categoryId);
+        setCategory(catInfo);
+
         const list = await getProductsByCategory(categoryId);
         setProducts(list);
       } catch (err) {
         console.error(err);
-        setError("Error loading products from category.");
+        setError("Error loading category details.");
       } finally {
         setLoading(false);
       }
@@ -53,35 +57,49 @@ export default function CategoryDetailsPage() {
 
   return (
     <>
-      <NavBar pagina="Category Details" />
+      <NavBar pagina="Category" />
 
       <Container className="mt-4">
-        <Button href="/category">Back</Button>
-        <Link href={`/product/create?categoryId=${categoryId}`}>
-        <Button variant="success">Add Product</Button>
-        </Link>
-        <Button href="/category/update" >Update</Button>
+        <Button href="/category" className="me-2">
+          Back
+        </Button>
 
-        <h3>Products in {categoryId} </h3>
+        <Link href={`/product/create?categoryId=${categoryId}`}>
+          <Button variant="success" className="me-2">
+            Add Product
+          </Button>
+        </Link>
+
+        <Link href={`/category/update?id=${categoryId}`}>
+          <Button variant="warning">Update Category</Button>
+        </Link>
+
+        <h2 className="mt-4">{category.name}</h2>
+        <p className="text-light">{category.description}</p>
+
+        <h4 className="mt-4">Products:</h4>
 
         {products.length > 0 ? (
           <div className="d-flex flex-wrap gap-3 mt-3">
             {products.map((p) => (
-              <Link href={`/product/update?id=${p.id}`} style={{ textDecoration: "none" }}>
-              <Card
+              <Link
                 key={p.id}
-                bg="dark"
-                text="white"
-                border="success"
-                style={{ width: "18rem" }}
+                href={`/product/update?id=${p.id}`}
+                style={{ textDecoration: "none" }}
               >
-                <Card.Header>{p.id}</Card.Header>
-                <Card.Body>
-                  <Card.Title>{p.name}</Card.Title>
-                  <Card.Text>Price: {p.price}</Card.Text>
-                  <Card.Text>Stock: {p.stock}</Card.Text>
-                </Card.Body>
-              </Card>
+                <Card
+                  bg="dark"
+                  text="white"
+                  border="success"
+                  style={{ width: "18rem" }}
+                >
+                  <Card.Header>{p.id}</Card.Header>
+                  <Card.Body>
+                    <Card.Title>{p.name}</Card.Title>
+                    <Card.Text>Price: {p.price}</Card.Text>
+                    <Card.Text>Stock: {p.stock}</Card.Text>
+                  </Card.Body>
+                </Card>
               </Link>
             ))}
           </div>

@@ -58,12 +58,12 @@ export default function UserPage() {
 
     return(
         <>
-            <NavBar pagina='User'/>
+          <NavBar pagina='User'/>
 
         {users.length > 0 ? (
       <div className="d-flex flex-wrap gap-3 mt-3">
         {users.map((u) => (
-        <Link href={`/user/update`} style={{ textDecoration: "none" }}>
+        <Link href={`/user/update?id=${u.id}`} style={{ textDecoration: "none" }}>
         <Card border="danger" bg="dark" text="white" style={{ width: "18rem" }} key={u.id}>
               <Card.Header>{u.id}</Card.Header>
             <Card.Body>

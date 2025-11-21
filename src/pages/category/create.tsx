@@ -17,7 +17,6 @@ export default function CreateCategoryPage() {
 
   const [error, setError] = useState<string | null>(null);
 
-  // 🔹 Carrega storeId do usuário logado
   useEffect(() => {
     const stored = localStorage.getItem("auth_user");
 
@@ -26,7 +25,6 @@ export default function CreateCategoryPage() {
       setLoading(false);
       return;
     }
-
     const user = JSON.parse(stored);
 
     if (!user.storeId) {
@@ -39,7 +37,6 @@ export default function CreateCategoryPage() {
     setLoading(false);
   }, []);
 
-  // 🔹 Envia o formulário
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 

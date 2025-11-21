@@ -1,5 +1,4 @@
 import api from "../services/api"
-import { getToken } from "./auth";
 
 export type Category = {
   id?: number;
@@ -35,11 +34,28 @@ export async function createCategory( name: string, description: string, storeId
   return res.data;
 }
 
-export async function updateCategory(id: number, payload: Category): Promise<Category> {
-  const { data } = await api.put<Category>(`/category/${id}`, payload)
-  return data
+export async function updateCategory(id: number, name: string, description: string) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.put(
+    `/category/${id}`,
+    { name, description },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }
 
-export async function deleteCategory(id: number): Promise<void> {
-  await api.delete(`/category/${id}`)
+export async function deleteCategory(id: number) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.delete(`/category/${id}`,
+    {
+      headers:{
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }

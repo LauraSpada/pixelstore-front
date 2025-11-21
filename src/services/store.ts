@@ -37,11 +37,27 @@ export async function createStore(data: { name: string; location: string }): Pro
   return res.data;
 }
 
-export async function updateStore(id: number, payload: Store): Promise<Store> {
-  const { data } = await api.put<Store>(`/store/${id}`, payload)
-  return data
+export async function updateStore(id: number, name: string, location: string) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.put(
+    `/store/${id}`,
+    { name, location },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
 }
 
-export async function deleteStore(id: number): Promise<void> {
-  await api.delete(`/Store/${id}`)
+export async function deleteStore(id: number) {
+  const token = localStorage.getItem("auth_token");
+  const res = await api.delete(`/store/${id}`, 
+    {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.data;
 }

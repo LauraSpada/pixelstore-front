@@ -58,7 +58,7 @@ export default function StorePage() {
         <>
             <NavBar pagina='Store'/>
 
-            <Link href={`store/update`} style={{ textDecoration: "none" }}>
+            <Link href={`/store/update?id=${store?.id}`} style={{ textDecoration: "none" }}>
             <Card style={{ maxWidth: "700px", margin: "20px auto"}}>
             <Card.Img variant="top"  src={`https://picsum.photos/350/200`}  style={{ objectFit: "cover"}}/>
             <Card.Body>
