@@ -18,9 +18,9 @@ export async function getProduct(id: number): Promise<Product> {
   return data
 }
 
-export async function createProduct(name: string, price: number, stock: number) {
+export async function createProduct(name: string, price: number, stock: number, categoryId: number) {
   const res = await api.post(
-    `/product/category/{$categoriId}`, { name, price, stock
+    `/product/category/${categoryId}`, { name, price, stock
     }, {
        headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -32,7 +32,7 @@ export async function createProduct(name: string, price: number, stock: number) 
 
 export async function updateProduct(id: number, name: string, price: number, stock: number) {
   const res = await api.put(`/product/${id}`,
-    { name, price, stock },
+    { name, price, stock},
      {
     headers: {
       Authorization: `Bearer ${getToken()}`,

@@ -6,8 +6,12 @@ import { getProductsByCategory, getCategory } from "@/services/category";
 import { Alert, Button, Card, Container, Spinner } from "react-bootstrap";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { BiAddToQueue } from "react-icons/bi";
+import { TbArrowBackUp } from "react-icons/tb";
 
 export default function CategoryDetailsPage() {
+  const router = useRouter();
   const params = useSearchParams();
   const categoryId = Number(params.get("id"));
 
@@ -18,7 +22,7 @@ export default function CategoryDetailsPage() {
 
   useEffect(() => {
     if (!categoryId) {
-      setError("Invalid category.");
+      setError("Invalid category");
       setLoading(false);
       return;
     }
@@ -32,7 +36,7 @@ export default function CategoryDetailsPage() {
         setProducts(list);
       } catch (err) {
         console.error(err);
-        setError("Error loading category details.");
+        setError("Error loading category details");
       } finally {
         setLoading(false);
       }
@@ -57,27 +61,31 @@ export default function CategoryDetailsPage() {
 
   return (
     <>
-      <NavBar pagina="Category" />
+      <NavBar pagina='Category'/>
+      <Container className="mt-4 mb-5">
+        <div className="form-two">
+        <h3>Details:</h3>
+        <Button variant="outline-primary" size="lg" href="/category"><TbArrowBackUp /></Button>
+        </div>
 
-      <Container className="mt-4">
-        <Button href="/category" className="me-2">
-          Back
-        </Button>
+       <Link href={`/category/update?id=${categoryId}`} style={{ textDecoration: "none" }}>
+               <Card border="warning" bg="dark" text="white" style={{ width: "18rem" }}>
+                  <Card.Header>{category.id}</Card.Header>
+                <Card.Body>
+                <Card.Title>{category.name}</Card.Title>
+                <Card.Text>
+                    {category.description}
+                </Card.Text>
+                </Card.Body>
+               </Card>
+               </Link>
 
-        <Link href={`/product/create?categoryId=${categoryId}`}>
-          <Button variant="success" className="me-2">
-            Add Product
-          </Button>
+        <div className="form-two">
+        <h3>Products:</h3>
+         <Link href={`/product/create?categoryId=${categoryId}`}>
+          <Button variant="outline-info" size="lg"><BiAddToQueue /></Button>
         </Link>
-
-        <Link href={`/category/update?id=${categoryId}`}>
-          <Button variant="warning">Update Category</Button>
-        </Link>
-
-        <h2 className="mt-4">{category.name}</h2>
-        <p className="text-light">{category.description}</p>
-
-        <h4 className="mt-4">Products:</h4>
+        </div>
 
         {products.length > 0 ? (
           <div className="d-flex flex-wrap gap-3 mt-3">
@@ -90,7 +98,7 @@ export default function CategoryDetailsPage() {
                 <Card
                   bg="dark"
                   text="white"
-                  border="success"
+                  border="info"
                   style={{ width: "18rem" }}
                 >
                   <Card.Header>{p.id}</Card.Header>

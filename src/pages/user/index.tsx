@@ -70,24 +70,25 @@ if (!token) return null;
 
     return(
         <>
-          <NavBar pagina='User'/>
-
-        {users.length > 0 ? (
-      <div className="d-flex flex-wrap gap-3 mt-3">
-        {users.map((u) => (
-        <Link href={`/user/update?id=${u.id}`} style={{ textDecoration: "none" }}>
-        <Card border="danger" bg="dark" text="white" style={{ width: "18rem" }} key={u.id}>
-              <Card.Header>{u.id}</Card.Header>
-            <Card.Body>
-              <Card.Title>{u.name}</Card.Title>
-            </Card.Body>
-        </Card>
-        </Link>
-        ))}
-      </div>
-    ) : (
-      <p className="text-center mt-3">No Users were found</p>
-    )}
+          <NavBar pagina="User" />
+          <Container className="mt-5 mb-5">
+            {users.length > 0 ? (
+            <div className="d-flex flex-wrap gap-3 mt-3">
+              {users.map((u) => (
+              <Link href={`/user/update?id=${u.id}`} style={{ textDecoration: "none" }}>
+              <Card border="danger" bg="dark" text="white" style={{ width: "18rem" }} key={u.id}>
+                    <Card.Header>{u.id}</Card.Header>
+                  <Card.Body>
+                    <Card.Title>{u.name}</Card.Title>
+                  </Card.Body>
+              </Card>
+              </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-center mt-3">No Users were found</p>
+          )}
+          </Container>
         </>
     )
 }

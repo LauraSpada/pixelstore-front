@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import { useRouter } from "next/navigation";
 import { createCategory } from "@/services/category"; // agora usando o service correto
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineSave } from "react-icons/md";
 
 export default function CreateCategoryPage() {
   const router = useRouter();
@@ -21,14 +23,14 @@ export default function CreateCategoryPage() {
     const stored = localStorage.getItem("auth_user");
 
     if (!stored) {
-      setError("No logged user found.");
+      setError("No logged user found");
       setLoading(false);
       return;
     }
     const user = JSON.parse(stored);
 
     if (!user.storeId) {
-      setError("User is not linked to any store.");
+      setError("User is not linked to any store");
       setLoading(false);
       return;
     }
@@ -41,7 +43,7 @@ export default function CreateCategoryPage() {
     e.preventDefault();
 
     if (!storeId) {
-      setError("User store not found.");
+      setError("User store not found");
       return;
     }
 
@@ -55,7 +57,7 @@ export default function CreateCategoryPage() {
       router.push("/category");
     } catch (err: any) {
       console.error(err);
-      setError(err.response?.data?.message || "Error creating category.");
+      setError(err.response?.data?.message || "Error creating category");
     } finally {
       setSubmitting(false);
     }
@@ -70,17 +72,17 @@ export default function CreateCategoryPage() {
 
   return (
     <>
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Button href="/category" >Back</Button>
-        <Card bg="dark" text="white" className="p-4">
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+        <div className="form-two">
           <Card.Title>Create Category</Card.Title>
-
+          <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+        </div>
           {error && <Alert variant="danger">{error}</Alert>}
 
           <Form onSubmit={handleSubmit}>
-    
             <Form.Group className="mb-3">
-              <Form.Label>Category Name</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter category name"
@@ -101,9 +103,9 @@ export default function CreateCategoryPage() {
               />
             </Form.Group>
 
-            <Button type="submit" disabled={submitting}>
-              {submitting ? "Creating..." : "Create Category"}
-            </Button>
+            <div className="button-create">
+              <Button type="submit" variant="outline-success" disabled={submitting} size="lg"><MdOutlineSave /></Button>
+            </div>
           </Form>
         </Card>
       </Container>

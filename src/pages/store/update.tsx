@@ -2,7 +2,9 @@ import NavBar from "@/components/NavBar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getStore, updateStore, deleteStore } from "@/services/store";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineDeleteForever, MdOutlineSaveAs } from "react-icons/md";
 
 export default function UpdateStorePage() {
   const router = useRouter();
@@ -24,7 +26,7 @@ export default function UpdateStorePage() {
         setLocation(store.location);
       } catch (err) {
         console.error(err);
-        setError("Erro ao carregar a loja.");
+        setError("Error loading Store");
       } finally {
         setLoading(false);
       }
@@ -43,12 +45,12 @@ export default function UpdateStorePage() {
       router.push("/store"); 
     } catch (err) {
       console.error(err);
-      setError("Erro ao atualizar a loja.");
+      setError("Error updating Store");
     }
   }
 
   async function handleDelete() {
-    if (!confirm("Are you sure you want to delete this Store")) return;
+    if (!confirm("Are you sure you want to delete this Store?")) return;
 
     try {
       await deleteStore(Number(id));
@@ -77,10 +79,12 @@ export default function UpdateStorePage() {
 
   return (
     <>
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Button href="/store" >Back</Button>
-        <h3>Update Store</h3>
-
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+          <div className="form-two">
+            <Card.Title>Update Store</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
         <Form onSubmit={handleUpdate}>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
@@ -100,16 +104,12 @@ export default function UpdateStorePage() {
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-between mt-4">
-            <Button type="submit" variant="success">
-              Update
-            </Button>
-
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+          <div className="form-two">
+            <Button variant="outline-danger" size="lg" onClick={handleDelete}><MdOutlineDeleteForever /></Button>
+            <Button type="submit" variant="outline-success" size="lg"><MdOutlineSaveAs /></Button>
           </div>
         </Form>
+        </Card>
       </Container>
     </>
   );

@@ -1,7 +1,14 @@
-import { getProduct, updateProduct, deleteProduct } from "@/services/product";
+"use client";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
+
+import { getProduct, updateProduct, deleteProduct, Product } from "@/services/product";
+import { getCategoriesByStore } from "@/services/store";
+import Link from "next/link";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineDeleteForever, MdOutlineSaveAs } from "react-icons/md";
 
 export default function ProductUpdatePage() {
   const router = useRouter();
@@ -11,8 +18,39 @@ export default function ProductUpdatePage() {
   const [price, setPrice] = useState<number | "">("");
   const [stock, setStock] = useState<number | "">("");
 
+  const [categoryId, setCategoryId] = useState<number | "">(""); 
+  const [categories, setCategories] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("auth_user");
+    if (!stored) {
+      setError("User not found.");
+      setLoading(false);
+      return;
+    }
+
+    const user = JSON.parse(stored);
+
+    if (!user.storeId) {
+      setError("User has no storeId.");
+      setLoading(false);
+      return;
+    }
+
+    async function loadCategories() {
+      try {
+        const list = await getCategoriesByStore(user.storeId);
+        setCategories(list);
+      } catch {
+        setError("Error loading categories.");
+      }
+    }
+
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -24,9 +62,11 @@ export default function ProductUpdatePage() {
         setName(product.name);
         setPrice(product.price);
         setStock(product.stock);
+
+        setCategoryId(product.id ?? "");
       } catch (err) {
         console.error(err);
-        setError("Erro ao carregar o produto.");
+        setError("Error loading product.");
       } finally {
         setLoading(false);
       }
@@ -39,13 +79,18 @@ export default function ProductUpdatePage() {
     e.preventDefault();
 
     try {
-      await updateProduct(Number(id), name, Number(price), Number(stock));
+      await updateProduct(
+        Number(id),
+        name,
+        Number(price),
+        Number(stock),
+      );
 
       alert("Product updated successfully!");
       router.push("/product");
     } catch (err) {
       console.error(err);
-      setError("Erro ao atualizar o produto.");
+      setError("Error updating product");
     }
   }
 
@@ -78,10 +123,12 @@ export default function ProductUpdatePage() {
     );
 
   return (
-    <>
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Button href="/product">Back</Button>
-        <h3 className="mt-3">Update Product</h3>
+    <Container className="center" style={{ maxWidth: "600px" }}>
+      <Card className="form">
+        <div className="form-two">
+          <Card.Title>Update Product</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+        </div>
 
         <Form onSubmit={handleUpdate}>
           <Form.Group className="mb-3">
@@ -98,8 +145,9 @@ export default function ProductUpdatePage() {
             <Form.Control
               type="number"
               value={price}
-              placeholder="Enter the new price"
-              onChange={(e) => setPrice(e.target.value === "" ? "" : Number(e.target.value))}
+              onChange={(e) =>
+                setPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
               required
             />
           </Form.Group>
@@ -109,23 +157,19 @@ export default function ProductUpdatePage() {
             <Form.Control
               type="number"
               value={stock}
-              placeholder="Enter the new stock"
-              onChange={(e) => setStock(e.target.value === "" ? "" : Number(e.target.value))}
+              onChange={(e) =>
+                setStock(e.target.value === "" ? "" : Number(e.target.value))
+              }
               required
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-between mt-4">
-            <Button type="submit" variant="success">
-              Update
-            </Button>
-
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+          <div className="form-two">
+            <Button variant="outline-danger" size="lg" onClick={handleDelete}><MdOutlineDeleteForever /></Button>
+            <Button type="submit" variant="outline-success" size="lg"><MdOutlineSaveAs /></Button>
           </div>
         </Form>
-      </Container>
-    </>
+      </Card>
+    </Container>
   );
 }

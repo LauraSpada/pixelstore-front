@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import api from "@/services/api"; // ajuste se necessário
 import { useRouter } from "next/navigation";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineSave } from "react-icons/md";
 
 export default function CreateUserPage() {
   const router = useRouter();
@@ -71,16 +73,18 @@ export default function CreateUserPage() {
 
   return (
     <>
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Button href="/login" >Back</Button>
-      <Card bg="dark" text="white" className="p-4">
-          <Card.Title>Create User</Card.Title>
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+          <div className="form-two">
+            <Card.Title>Create User</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
 
           {error && <Alert variant="danger">{error}</Alert>}
 
           <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
               type="text"
               placeholder="Enter the username"
@@ -117,12 +121,12 @@ export default function CreateUserPage() {
               ))}
               </Form.Select>
           </Form.Group>
-
-          <Button type="submit" disabled={submitting}>
-              {submitting ? "Creating..." : "Create User"}
-          </Button>
+              
+          <div className="button-create">
+            <Button type="submit" variant="outline-success" disabled={submitting} size="lg"><MdOutlineSave /></Button>
+          </div>
           </Form>
-      </Card>
+        </Card>
       </Container>
     </>
   );

@@ -2,7 +2,10 @@ import NavBar from "@/components/NavBar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCategory, updateCategory, deleteCategory } from "@/services/category";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
+import Link from "next/link";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineDeleteForever, MdOutlineSaveAs } from "react-icons/md";
 
 export default function UpdateCategoryPage() {
   const router = useRouter();
@@ -75,11 +78,12 @@ export default function UpdateCategoryPage() {
 
   return (
     <>
-      <NavBar pagina="Update Category" />
-
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <h3>Update Category</h3>
-
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+          <div className="form-two">
+            <Card.Title>Update Category</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
         <Form onSubmit={handleUpdate}>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
@@ -99,16 +103,12 @@ export default function UpdateCategoryPage() {
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-between mt-4">
-            <Button type="submit" variant="success">
-              Update
-            </Button>
-
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+          <div className="form-two">
+            <Button variant="outline-danger" size="lg" onClick={handleDelete}><MdOutlineDeleteForever /></Button>
+            <Button type="submit" variant="outline-success" size="lg"><MdOutlineSaveAs /></Button>
           </div>
         </Form>
+        </Card>
       </Container>
     </>
   );

@@ -63,20 +63,20 @@ if (!token) return null;
 
     if (error)
         return (
-        <Container className="mt-5">
+        <Container className="mt-5 mb-5">
             <Alert variant="danger">{error}</Alert>
         </Container>
         );
 
     return(
         <>
-            <NavBar pagina='Product'/>
-
-        {products.length > 0 ? (
+          <NavBar pagina='Product'/>
+          <Container className="mt-4">
+            {products.length > 0 ? (
         <div className="d-flex flex-wrap gap-3 mt-3">
             {products.map((p) => (
             <Link href={`/product/update?id=${p.id}`} style={{ textDecoration: "none" }}>
-            <Card border="success" bg="dark" text="white" style={{ width: "18rem", cursor: "pointer"}} key={p.id}>
+            <Card border="info" bg="dark" text="white" style={{ width: "18rem", cursor: "pointer"}} key={p.id}>
                     <Card.Header>{p.id}</Card.Header>
                 <Card.Body>
                     <Card.Title>{p.name}</Card.Title>
@@ -94,7 +94,8 @@ if (!token) return null;
         ) : (
         <p className="text-center mt-3">No Products were found</p>
         )}
-
-        </>
+          </Container>
+        
+      </>
     )
 }

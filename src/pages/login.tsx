@@ -35,14 +35,16 @@ export default function LoginPage() {
 
   return (
     <>
-      <Container className="d-flex align-items-center" style={{ minHeight: '100vh' }}>
+      <Container className="center-login">
         <Row className="w-100 justify-content-center">
-          <Col xs={12} md={6} lg={4}>
-            <Card className="shadow-sm">
+          <div className="photo-logoc"></div>
+          <Col xs={12} md={6} lg={4} >
+            <Card className="form" style={{padding: "0px", border:"1px solid white"}}>
+              <Card.Title className="text-center mt-4">Login</Card.Title>
               <Card.Body>
                 <Form onSubmit={submitLogin}>
                   <FormGroup>
-                    <FormLabel>User</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl
                       type="text"
                       value={name}
@@ -60,21 +62,24 @@ export default function LoginPage() {
                     ></FormControl>
                   </FormGroup>
                   <br></br>
-                  <Button type="submit" variant="primary">Enviar</Button>
+                  <div className="d-flex justify-content-between mt-4">
+                  <Button type="submit" variant="outline-success">Sign IN</Button>
                   {error && <p style={{ color: "red" }}>{error}</p>}
+                  <ButtonGroup vertical>
+                  <DropdownButton
+                  variant="outline-success"
+                    as={ButtonGroup}
+                    title="Sign UP"
+                    id="bg-vertical-dropdown-1"
+                    >
+                    <Dropdown.Item href="/user/create">User</Dropdown.Item>
+                    <Dropdown.Item href="/store/create">Store</Dropdown.Item>
+                    </DropdownButton>
+                  </ButtonGroup>
+                  </div>
                 </Form>
               </Card.Body>
             </Card>
-            <ButtonGroup vertical>
-              <DropdownButton
-              as={ButtonGroup}
-              title="Create"
-              id="bg-vertical-dropdown-1"
-              >
-              <Dropdown.Item href="/user/create" >User</Dropdown.Item>
-              <Dropdown.Item href="/store/create" >Store</Dropdown.Item>
-              </DropdownButton>
-              </ButtonGroup>
           </Col>
         </Row>
       </Container>

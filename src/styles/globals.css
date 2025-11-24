@@ -34,3 +34,74 @@ body {
   background-size: cover;
   background-position: center;
 }
+
+.photo-logoc {
+  border: 1px solid white;
+  width: 312px;
+  height: 312px;
+  border-radius: 2%;
+  object-fit: cover;
+  background-image: url("../assets/logopixelstore.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.photo-logoh {
+  width: 380px;
+  height: 380px;
+  border-radius: 15%;
+  background-image: url("../assets/logopixelstore.png");
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.center-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+  height: 100vh;   
+  min-height : 100vh;     
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+}
+
+.center-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+}
+
+.form {
+  background-color: #122e2d; 
+  color: white;            
+  padding: 1.5rem;     
+  border: 1px solid white;   
+}
+
+.form-two {
+  display: flex;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  justify-content: space-between
+}
+
+.button-create {
+  display: flex;
+  justify-content: end;
+}
+
+.layout {
+  
+}

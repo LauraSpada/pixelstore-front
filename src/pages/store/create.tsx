@@ -2,9 +2,11 @@
 
 import NavBar from "@/components/NavBar";
 import { useState } from "react";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Container, Form, Spinner } from "react-bootstrap";
 import { createStore } from "@/services/store";
 import { useRouter } from "next/navigation";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineSave } from "react-icons/md";
 
 export default function CreateStorePage() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function CreateStorePage() {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -46,9 +49,12 @@ export default function CreateStorePage() {
 
   return (
     <>
-      <Container className="mt-4" style={{ maxWidth: "500px" }}>
-        <Button href="/login" >Back</Button>
-        <h3 className="mb-3">Create a new Store</h3>
+      <Container className="center" style={{ maxWidth: "500px" }}>
+        <Card className="form">
+          <div className="form-two">
+            <Card.Title>Create Store</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
 
         {error && <Alert variant="danger">{error}</Alert>}
         {success && <Alert variant="success">{success}</Alert>}
@@ -58,7 +64,7 @@ export default function CreateStorePage() {
             <Form.Label>Store Name</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Ex.: PixelRost"
+              placeholder="Enter the Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -68,18 +74,17 @@ export default function CreateStorePage() {
             <Form.Label>Location</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Ex.: Passo Fundo | RS"
+              placeholder="Ex.: City | State"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-end">
-            <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? <Spinner animation="border" size="sm" /> : "Create Store"}
-            </Button>
+          <div className="button-create">
+            <Button variant="outline-success" type="submit" disabled={loading} size="lg"><MdOutlineSave /></Button>
           </div>
         </Form>
+        </Card>
       </Container>
     </>
   );

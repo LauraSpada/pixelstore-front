@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Alert, Button, Card, Container, Form } from "react-bootstrap";
 import api from "@/services/api";
 import Link from "next/link";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineSave } from "react-icons/md";
 
 export default function CreateProductPage() {
   const params = useSearchParams();
@@ -57,14 +59,13 @@ export default function CreateProductPage() {
 
   return (
     <>
-        <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Link href={`/category/details?id=${categoryId}`}>
-        <Button variant="primary">Back</Button>
-        </Link>
-        <Card bg="dark" text="white" className="p-4">
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+          <div className="form-two">
             <Card.Title>Create Product</Card.Title>
-
-            <p>Category ID: <strong>{categoryId}</strong></p>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
+          <p>Category ID: <strong>{categoryId}</strong></p>
 
             {error && <Alert variant="danger">{error}</Alert>}
 
@@ -103,12 +104,12 @@ export default function CreateProductPage() {
                 />
             </Form.Group>
 
-            <Button type="submit" disabled={submitting}>
-                {submitting ? "Creating..." : "Create Product"}
-            </Button>
+            <div className="button-create">
+              <Button type="submit" variant="outline-success" disabled={submitting} size="lg"><MdOutlineSave /></Button>
+            </div>
             </Form>
         </Card>
-        </Container>
+      </Container>
     </>
   );
 }

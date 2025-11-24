@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { getUser, updateUser, deleteUser } from "@/services/user";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { TbArrowBackUp } from "react-icons/tb";
+import { MdOutlineDeleteForever, MdOutlineSaveAs } from "react-icons/md";
 
 export default function UpdateUserPage() {
   const router = useRouter();
@@ -24,7 +26,7 @@ export default function UpdateUserPage() {
         setName(user.name);
       } catch (err) {
         console.error(err);
-        setError("Erro ao carregar o usuário.");
+        setError("Error loading User");
       } finally {
         setLoading(false);
       }
@@ -76,10 +78,12 @@ export default function UpdateUserPage() {
 
   return (
     <>
-      <Container className="mt-4" style={{ maxWidth: "600px" }}>
-        <Button href="/user" >Back</Button>
-        <h3>Update User</h3>
-
+      <Container className="center" style={{ maxWidth: "600px" }}>
+        <Card className="form">
+          <div className="form-two">
+            <Card.Title>Update User</Card.Title>
+            <Button variant="outline-primary" size="lg" onClick={() => router.back()}><TbArrowBackUp /></Button>
+          </div>
         <Form onSubmit={handleUpdate}>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
@@ -100,16 +104,12 @@ export default function UpdateUserPage() {
             />
           </Form.Group>
 
-          <div className="d-flex justify-content-between mt-4">
-            <Button type="submit" variant="success">
-              Update
-            </Button>
-
-            <Button variant="danger" onClick={handleDelete}>
-              Delete
-            </Button>
+          <div className="form-two">
+            <Button variant="outline-danger" size="lg" onClick={handleDelete}><MdOutlineDeleteForever /></Button>
+            <Button type="submit" variant="outline-success" size="lg"><MdOutlineSaveAs /></Button>
           </div>
         </Form>
+        </Card>
       </Container>
     </>
   );

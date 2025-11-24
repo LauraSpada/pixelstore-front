@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Alert, Button, Card, Container, Spinner } from "react-bootstrap";
+import { BiAddToQueue } from "react-icons/bi";
 
 export default function CategoryPage() {
     
@@ -27,7 +28,7 @@ export default function CategoryPage() {
 
       const stored = localStorage.getItem("auth_user");
       if (!stored) {
-        console.error("No user.");
+        console.error("No user");
         setLoading(false);
         return;
       }
@@ -44,7 +45,7 @@ export default function CategoryPage() {
         const list = await getCategoriesByStore(user.storeId);
         setCategories(list);
       } catch (err) {
-        console.error("Error while searching categories:", err);
+        console.error("Error while searching categories", err);
       } finally {
         setLoading(false);
       }
@@ -63,16 +64,18 @@ if (!token) return null;
 
     if (error)
         return (
-        <Container className="mt-5">
+        <Container className="mt-5 mb-5">
             <Alert variant="danger">{error}</Alert>
         </Container>
         );
 
     return(
         <>
-            <NavBar pagina='Category'/>
-            <Button href="/category/create" >Add</Button>
-           
+          <NavBar pagina='Category'/>
+          <Container className="mt-4">
+            <div className="d-flex justify-content-end">
+            <Button href="/category/create" variant="outline-warning" size="lg"><BiAddToQueue /></Button>
+            </div>
            {categories.length > 0 ? (
              <div className="d-flex flex-wrap gap-3 mt-3">
                {categories.map((c) => (
@@ -92,7 +95,7 @@ if (!token) return null;
            ) : (
              <p className="text-center mt-3">No Categories were found</p>
            )}
-
-        </>
+        </Container>
+      </>
     )
 }
